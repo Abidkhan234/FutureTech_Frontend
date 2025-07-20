@@ -91,51 +91,68 @@ export const AppProvider = ({ children }) => {
   };
 
   const handlePostSend = async (e) => {
-    e.preventDefault();
-    const descriptionWordLength = descriptionValue.trim().split(" ");
-    const token = localStorage.getItem("token");
+    try {
+      e.preventDefault();
+      const descriptionWordLength = descriptionValue.trim().split(" ");
+      const token = localStorage.getItem("token");
 
-    if (!token) {
-      toast.error("Create Account First");
-      handleToken();
-      navigate("/login");
-      return;
-    }
-
-    if (titleValue.trim() === "") {
-      toast.error("Title is mandatory");
-      return;
-    } else if (descriptionWordLength.length > 100) {
-      toast.error("Description must be under 100 words");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("File", file);
-    formData.append("title", titleValue);
-    formData.append("description", descriptionValue);
-
-    await toast.promise(
-      axios.post(`${import.meta.env.VITE_URL}/api/post`, formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }),
-      {
-        loading: "Posting...",
-        success: (res) => res.data.message,
-        error: (err) => err.response?.data?.message || "Post failed",
+      if (!token) {
+        toast.error("Create Account First");
+        handleToken();
+        navigate("/login");
+        return;
       }
-    );
 
-    setTitleValue("");
-    setDescriptionValue("");
-    setfile(null);
-    setisVisible(false);
-    handleToken();
-    navigate("/");
-    handleFetch();
+      if (titleValue.trim() === "") {
+        toast.error("Title is mandatory");
+        return;
+      } else if (descriptionWordLength.length > 100) {
+        toast.error("Description must be under 100 words");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("File", file);
+      formData.append("title", titleValue);
+      formData.append("description", descriptionValue);
+
+      await toast.promise(
+        axios.post(`${import.meta.env.VITE_URL}/api/post`, formData, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }),
+        {
+          loading: "Posting...",
+          success: (res) => res.data.message,
+          error: (err) => {
+            if (
+              err.response?.data?.message
+                .toLowerCase()
+                .includes("token expired")
+            ) {
+              localStorage.removeItem("token");
+              navigate("/login");
+              handleToken();
+              return "Session expired login again";
+            } else {
+              return err.response?.data?.message;
+            }
+          },
+        }
+      );
+
+      setTitleValue("");
+      setDescriptionValue("");
+      setfile(null);
+      setisVisible(false);
+      handleToken();
+      navigate("/");
+      handleFetch();
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleDelete = async (id) => {
@@ -165,7 +182,7 @@ export const AppProvider = ({ children }) => {
             err.response?.data?.message?.toLowerCase().includes("token expired")
           ) {
             localStorage.removeItem("token");
-            setisToken(false);
+            handleToken();
             navigate("/login");
             return "Session expired. Please login again.";
           }
@@ -176,26 +193,25 @@ export const AppProvider = ({ children }) => {
       handleFetch();
     } catch (error) {
       console.log(error);
-      // No need to toast here, already handled inside toast.promise
     }
   };
 
   const handleUpdate = async (e, id) => {
-    e.preventDefault();
-
-    if (!titleValue.trim() || !descriptionValue.trim()) {
-      toast.error("All fields are required");
-      return;
-    }
-
-    const token = localStorage.getItem("token");
-
-    const formData = new FormData();
-    formData.append("File", file);
-    formData.append("title", titleValue);
-    formData.append("description", descriptionValue);
-
     try {
+      e.preventDefault();
+
+      if (!titleValue.trim() || !descriptionValue.trim()) {
+        toast.error("All fields are required");
+        return;
+      }
+
+      const token = localStorage.getItem("token");
+
+      const formData = new FormData();
+      formData.append("File", file);
+      formData.append("title", titleValue);
+      formData.append("description", descriptionValue);
+
       await toast.promise(
         axios.put(`${import.meta.env.VITE_URL}/api/post/${id}`, formData, {
           headers: {
@@ -205,7 +221,19 @@ export const AppProvider = ({ children }) => {
         {
           loading: "Updating...",
           success: (res) => res.data.message,
-          error: (err) => err.response?.data?.message || "Update failed",
+          error: (err) => {
+            if (
+              err.response?.data?.message
+                ?.toLowerCase()
+                .includes("token expired")
+            ) {
+              localStorage.removeItem("token");
+              handleToken();
+              navigate("/login");
+              return "Session expired. Please login again.";
+            }
+            return err.response?.data?.message || "Failed to delete post";
+          },
         }
       );
 
@@ -218,14 +246,7 @@ export const AppProvider = ({ children }) => {
 
       handleFetch();
     } catch (error) {
-      if (
-        error.response?.data?.message?.toLowerCase().includes("token expired")
-      ) {
-        toast.error("Session expired. Please login again.");
-        localStorage.removeItem("token");
-        setisToken(false);
-        navigate("/login");
-      }
+      console.log(error);
     }
   };
   // For Post
