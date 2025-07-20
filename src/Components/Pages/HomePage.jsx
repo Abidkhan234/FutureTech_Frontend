@@ -1,7 +1,6 @@
 import { useAppContext } from "../../../Context/AppContext";
 import Cards from "../Card/Cards";
 import SkeletonCard from "../Card/SkeletonCard";
-import Loader from "../Loader/Loader";
 import Modal from "../Modal/Modal";
 
 const HomePage = () => {

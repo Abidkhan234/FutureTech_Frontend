@@ -70,7 +70,18 @@ export const AppProvider = ({ children }) => {
     try {
       setloader(true);
       const { data } = await axios.get(`${import.meta.env.VITE_URL}/api/post`);
-      setshowData(data);
+
+      const sortedPosts = data.sort((a, b) => {
+        const dateA = new Date(
+          `${a.postTime.month} ${a.postTime.day}, ${a.postTime.year} ${a.postTime.time}`
+        );
+        const dateB = new Date(
+          `${b.postTime.month} ${b.postTime.day}, ${b.postTime.year} ${b.postTime.time}`
+        );
+        return dateB - dateA; // latest first
+      });
+
+      setshowData(sortedPosts);
     } catch (error) {
       console.error("Error fetching posts:", error);
       toast.error("Failed to load posts");
