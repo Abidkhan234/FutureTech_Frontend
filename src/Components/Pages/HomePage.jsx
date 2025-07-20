@@ -1,5 +1,6 @@
 import { useAppContext } from "../../../Context/AppContext";
 import Cards from "../Card/Cards";
+import SkeletonCard from "../Card/SkeletonCard";
 import Loader from "../Loader/Loader";
 import Modal from "../Modal/Modal";
 
@@ -8,7 +9,10 @@ const HomePage = () => {
   const { loader } = useAppContext();
 
   return loader ? (
-    <Loader />
+    <div className="md:min-h-[89.2vh] min-h-[90.5vh] h-full w-full flex flex-col items-center justify-center pt-2 gap-4 px-5">
+      <SkeletonCard />
+      <SkeletonCard />
+    </div>
   ) : (
     <div className="md:min-h-[89.2vh] min-h-[90.5vh] h-full w-full flex flex-col items-center justify-center pt-4 gap-4 px-5">
       {showData.map((v, i) => (
