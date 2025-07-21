@@ -90,6 +90,29 @@ export const AppProvider = ({ children }) => {
     }
   };
 
+  // For fetching updated data
+  const handleData = async () => {
+    try {
+      const { data } = await axios.get(`${import.meta.env.VITE_URL}/api/post`);
+
+      const sortedPosts = data.sort((a, b) => {
+        const dateA = new Date(
+          `${a.postTime.month} ${a.postTime.day}, ${a.postTime.year} ${a.postTime.time}`
+        );
+        const dateB = new Date(
+          `${b.postTime.month} ${b.postTime.day}, ${b.postTime.year} ${b.postTime.time}`
+        );
+        return dateB - dateA; // latest first
+      });
+
+      setshowData(sortedPosts);
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+    }
+  };
+  // For fetching updated data
+
   const handlePostSend = async (e) => {
     try {
       e.preventDefault();
@@ -149,7 +172,7 @@ export const AppProvider = ({ children }) => {
       setisVisible(false);
       handleToken();
       navigate("/");
-      handleFetch();
+      handleData();
     } catch (error) {
       console.log(error);
     }
@@ -190,7 +213,7 @@ export const AppProvider = ({ children }) => {
         },
       });
 
-      handleFetch();
+      handleData();
     } catch (error) {
       console.log(error);
     }
@@ -244,7 +267,7 @@ export const AppProvider = ({ children }) => {
       setFilePreview(null);
       setisModal(false);
 
-      handleFetch();
+      handleData();
     } catch (error) {
       console.log(error);
     }
@@ -419,7 +442,17 @@ export const AppProvider = ({ children }) => {
         }
       );
 
-      handleFetch();
+      if (data.message.toLowerCase().includes("unliked")) {
+        toast.success(data.message, {
+          icon: "💔",
+        });
+      } else {
+        toast.success(data.message, {
+          icon: "❤️",
+        });
+      }
+
+      handleData();
     } catch (error) {
       console.log(error);
       if (
