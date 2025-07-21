@@ -4,6 +4,7 @@ import { FiEdit, FiTrash2 } from "react-icons/fi";
 import { useState } from "react";
 import { useAppContext } from "../../../Context/AppContext";
 import { MdClose, MdMoreHoriz } from "react-icons/md";
+import profilePic from "../../Asset/Images/profile.png";
 
 const Cards = ({
   title,
@@ -57,9 +58,7 @@ const Cards = ({
             <img
               src={`${
                 userData.avatarPath?.includes("/Images")
-                  ? `${
-                      import.meta.env.VITE_URL
-                    }/api${userData.avatarPath.replace("Public", "")}`
+                  ? `${profilePic}`
                   : userData.avatarPath
               }`}
               className="h-full w-full object-cover"

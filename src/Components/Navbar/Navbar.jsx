@@ -6,6 +6,7 @@ import Sidebar from "../SideBar/Sidebar";
 import { AnimatePresence, motion } from "motion/react";
 import { FaHeart } from "react-icons/fa6";
 import { FiLogOut } from "react-icons/fi";
+import profilePic from "../../Asset/Images/profile.png";
 
 const navLinks = [
   {
@@ -75,9 +76,7 @@ const Navbar = () => {
                 <img
                   src={`${
                     tokenData.avatarpath?.includes("/Images")
-                      ? `${
-                          import.meta.env.VITE_URL
-                        }/api${tokenData.avatarpath.replace("Public", "")}`
+                      ? `${profilePic}`
                       : tokenData.avatarpath
                   }`}
                   className="w-full h-full object-cover object-center"
