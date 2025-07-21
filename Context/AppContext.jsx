@@ -303,7 +303,6 @@ export const AppProvider = ({ children }) => {
       }, 1000);
     } catch (error) {
       console.log(error);
-      toast.error(error.response?.data?.message || "Signup failed");
     }
   };
 
