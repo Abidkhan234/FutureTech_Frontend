@@ -254,8 +254,9 @@ export const AppProvider = ({ children }) => {
   // For Login/SignUp/Logout
 
   const handleSignUpSend = async (e) => {
-    e.preventDefault();
     try {
+      e.preventDefault();
+
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (userName.trim() === "") {
@@ -281,12 +282,14 @@ export const AppProvider = ({ children }) => {
       formData.append("userName", userName);
       formData.append("password", password);
 
-      const { data } = await axios.post(
-        `${import.meta.env.VITE_URL}/api/user/register`,
-        formData
+      await toast.promise(
+        axios.post(`${import.meta.env.VITE_URL}/api/user/register`, formData),
+        {
+          loading: "Signing up...",
+          success: (res) => res.data.message,
+          error: (err) => err.response?.data?.message || "Signup failed",
+        }
       );
-
-      toast.success(data.message);
 
       // Reset fields
       setEmail("");
@@ -401,7 +404,7 @@ export const AppProvider = ({ children }) => {
       const token = localStorage.getItem("token");
 
       if (!token) {
-        alert("Create Account First");
+        toast.error("Create Account First");
         handleToken();
         navigate("/login");
         return;
