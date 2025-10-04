@@ -8,12 +8,12 @@ const HomePage = () => {
   const { loader } = useAppContext();
 
   return loader ? (
-    <div className="md:min-h-[89.2vh] min-h-[90.5vh] h-full w-full flex flex-col items-center justify-center pt-2 gap-4 px-5">
+    <div className="h-full w-full flex flex-col items-center justify-center pt-20 gap-4 px-5 pb-7">
       <SkeletonCard />
       <SkeletonCard />
     </div>
   ) : (
-    <div className="md:min-h-[89.2vh] min-h-[90.5vh] h-full w-full flex flex-col items-center justify-center pt-4 gap-4 px-5">
+    <div className="h-full w-full flex flex-col items-center justify-center pt-20 gap-4 px-5 pb-7">
       {showData.map((v, i) => (
         <div className="w-full max-w-[500px] basis-[500px]" key={i}>
           <Cards

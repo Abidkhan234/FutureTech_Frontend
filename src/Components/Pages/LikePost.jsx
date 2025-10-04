@@ -5,7 +5,7 @@ const LikePost = () => {
   const { likeData } = useAppContext();
 
   return (
-    <div className="min-h-[89.8vh] md:min-h-[89.2vh] w-full p-4">
+    <div className="h-full w-full p-4">
       <h2 className="text-2xl font-bold mb-6 text-white content-center text-center">
         Your Liked Posts ❤️
       </h2>

@@ -54,15 +54,15 @@ const Form = ({ pageTitle, isLogin }) => {
   };
 
   return (
-    <div className="border-2 rounded-md py-2.5 px-2 bg-[#1A1A1A]">
-      <form
-        className="flex flex-col justify-center items-center gap-5 text-white h-full"
-        encType="multipart/form-data"
-        method="post"
-        onSubmit={(e) => {
-          isLogin ? handleLoginSend(e) : handleSignUpSend(e);
-        }}
-      >
+    <form
+      className="min-h-[90vh] w-full flex justify-center items-center"
+      encType="multipart/form-data"
+      method="post"
+      onSubmit={(e) => {
+        isLogin ? handleLoginSend(e) : handleSignUpSend(e);
+      }}
+    >
+      <div className="flex flex-col justify-center items-center gap-5 text-white w-full max-w-[500px] border-2 rounded-md py-2.5 bg-[#1A1A1A] px-2">
         <div>
           <h3 className="font-bold md:text-4xl text-3xl text-white uppercase tracking-wide">
             {pageTitle}
@@ -186,8 +186,8 @@ const Form = ({ pageTitle, isLogin }) => {
             <span className="absolute bottom-0 left-0 h-full w-[2px] bg-white transition-all delay-300 duration-100 group-hover:h-0 group-clicked:h-0" />
           </motion.button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   );
 };
 

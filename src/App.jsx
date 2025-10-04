@@ -9,7 +9,7 @@ import LikePost from "./Components/Pages/LikePost";
 
 const App = () => {
   return (
-    <div className="bg-[#1E1E1E] h-full">
+    <div className="bg-[#1E1E1E] min-h-[100vh] w-full">
       <Routes>
         <Route element={<PageLayout />}>
           <Route index element={<HomePage />} />

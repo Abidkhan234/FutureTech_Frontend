@@ -16,11 +16,11 @@ const PageLayout = () => {
           },
         }}
       />
-      <header className="sticky top-0 left-0 right-0 z-10">
+      <header className="fixed top-0 left-0 right-0 z-10">
         <Navbar />
       </header>
 
-      <main className="w-full">
+      <main className="w-full h-full">
         <Outlet />
       </main>
     </div>

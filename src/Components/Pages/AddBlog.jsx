@@ -8,7 +8,7 @@ const AddBlog = () => {
     useAppContext();
 
   return (
-    <div className="md:h-[89.2vh] h-[90.5vh] w-full">
+    <div className="h-full w-full">
       <div className="absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] w-full max-w-[400px]">
         <AnimatePresence>
           {isVisible && (
