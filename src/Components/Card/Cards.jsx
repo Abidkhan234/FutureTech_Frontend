@@ -57,7 +57,7 @@ const Cards = ({
           <div className="relative w-10.5 h-10.5 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-600">
             <img
               src={`${
-                userData.avatarPath?.includes("/Images")
+                userData?.avatarPath?.includes("/Images")
                   ? `${profilePic}`
                   : userData.avatarPath
               }`}
