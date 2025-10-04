@@ -17,7 +17,7 @@ const LikePost = () => {
               <LikePostCard
                 title={v.title}
                 description={v.description}
-                image={v.filePath.replace("Public", "")}
+                image={v.filePath.url.replace("Public", "")}
               />
             </div>
           );

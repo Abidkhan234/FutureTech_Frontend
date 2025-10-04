@@ -19,7 +19,7 @@ const HomePage = () => {
           <Cards
             title={v.title}
             description={v.description}
-            file={v.filePath}
+            file={v.filePath?.url}
             postTime={v.postTime}
             userData={v.userData}
             postId={v._id}

@@ -71,7 +71,7 @@ export const AppProvider = ({ children }) => {
       setloader(true);
       const { data } = await axios.get(`${import.meta.env.VITE_URL}/api/post`);
 
-      const sortedPosts = data.sort((a, b) => {
+      const sortedPosts = data.allPosts.sort((a, b) => {
         const dateA = new Date(
           `${a.postTime.month} ${a.postTime.day}, ${a.postTime.year} ${a.postTime.time}`
         );
@@ -95,7 +95,7 @@ export const AppProvider = ({ children }) => {
     try {
       const { data } = await axios.get(`${import.meta.env.VITE_URL}/api/post`);
 
-      const sortedPosts = data.sort((a, b) => {
+      const sortedPosts = data.allPosts.sort((a, b) => {
         const dateA = new Date(
           `${a.postTime.month} ${a.postTime.day}, ${a.postTime.year} ${a.postTime.time}`
         );
@@ -140,7 +140,7 @@ export const AppProvider = ({ children }) => {
       formData.append("description", descriptionValue);
 
       await toast.promise(
-        axios.post(`${import.meta.env.VITE_URL}/api/post`, formData, {
+        axios.post(`${import.meta.env.VITE_URL}/api/post/add-post`, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -189,7 +189,7 @@ export const AppProvider = ({ children }) => {
       }
 
       const deletePromise = axios.delete(
-        `${import.meta.env.VITE_URL}/api/post/${id}`,
+        `${import.meta.env.VITE_URL}/api/post/delete-post/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -236,11 +236,15 @@ export const AppProvider = ({ children }) => {
       formData.append("description", descriptionValue);
 
       await toast.promise(
-        axios.put(`${import.meta.env.VITE_URL}/api/post/${id}`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }),
+        axios.patch(
+          `${import.meta.env.VITE_URL}/api/post/update-post/${id}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        ),
         {
           loading: "Updating...",
           success: (res) => res.data.message,
@@ -320,6 +324,7 @@ export const AppProvider = ({ children }) => {
       setuserName("");
       setAvatar(null);
       setFilePreview(null);
+      setTogglePassword(false);
 
       setTimeout(() => {
         navigate("/login");
@@ -382,7 +387,9 @@ export const AppProvider = ({ children }) => {
       localStorage.removeItem("token");
       handleToken();
 
-      const { data } = await axios.get(`${import.meta.env.VITE_URL}/api/user`);
+      const { data } = await axios.post(
+        `${import.meta.env.VITE_URL}/api/user/logout`
+      );
 
       setProfileDropdown(false);
 
@@ -432,7 +439,7 @@ export const AppProvider = ({ children }) => {
         return;
       }
 
-      const { data } = await axios.put(
+      const { data } = await axios.patch(
         `${import.meta.env.VITE_URL}/api/post/like-posts/${postId}`,
         {},
         {

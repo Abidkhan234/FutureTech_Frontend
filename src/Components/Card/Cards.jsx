@@ -114,7 +114,7 @@ const Cards = ({
                     onClick={() =>
                       handleFields(postId, title, description, file)
                     }
-                    className="w-full px-5 py-3 text-sm flex items-center gap-2 text-gray-700 hover:text-black cursor-pointer"
+                    className="w-full px-3 py-3 text-sm flex items-center gap-2 text-gray-700 hover:text-black cursor-pointer"
                   >
                     <FiEdit className="text-lg" /> Update Post
                   </motion.button>
@@ -125,7 +125,7 @@ const Cards = ({
                       handleDelete(postId);
                       setDropdownOpen(false);
                     }}
-                    className="w-full px-5 py-3 text-sm flex items-center gap-2 text-red-600 hover:text-red-800 cursor-pointer"
+                    className="w-full px-3 py-3 text-sm flex items-center gap-2 text-red-600 hover:text-red-800 cursor-pointer"
                   >
                     <FiTrash2 className="text-lg" /> Delete Post
                   </motion.button>
