@@ -5,6 +5,9 @@ import { useState } from "react";
 import { useAppContext } from "../../../Context/AppContext";
 import { MdClose, MdMoreHoriz } from "react-icons/md";
 import profilePic from "../../Asset/Images/profile.png";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
+import axios from "axios";
 
 const Cards = ({
   title,
@@ -13,29 +16,81 @@ const Cards = ({
   file,
   userData,
   postId,
-  isLiked,
-  totalLikes
+  likeArr
 }) => {
   const {
     handleDelete,
     tokenData,
-    handleLikePosts,
     isModal,
     setisModal,
     setselectedId,
     setDescriptionValue,
     setTitleValue,
     setFilePreview,
+    handleToken,
+    handleData
   } = useAppContext();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [readMore, setReadMore] = useState(false);
+  const [likes, setLikes] = useState(likeArr || []);
+  const navigate = useNavigate();
 
   const words = description.split(" ");
   const shouldTruncate = words.length > 15;
   const previewText = words.slice(0, 15).join(" ") + "...";
 
   const isOwner = tokenData && tokenData.userId === userData._id;
+  const isLiked = likes?.includes(tokenData?.userId);
+
+  const handleLikePosts = async (postId) => {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        toast.error("Create Account First");
+        handleToken();
+        navigate("/login");
+        return;
+      }
+
+      if (likes.includes(tokenData?.userId)) {
+        toast.success("Post Unliked", {
+          icon: "💔",
+        });
+        setLikes((prev) => prev.filter((v) => v !== tokenData?.userId))
+      } else {
+        toast.success("Post Liked", {
+          icon: "❤️",
+        });
+        setLikes([...likes, tokenData?.userId])
+      }
+
+      const { data } = await axios.patch(
+        `${import.meta.env.VITE_URL}/api/post/like-posts/${postId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      handleData();
+    } catch (error) {
+      console.log(error);
+      if (
+        error.response?.data?.message?.toLowerCase().includes("token expired")
+      ) {
+        alert("Session expired. Please login again.");
+        localStorage.clear();
+        setisToken(false);
+        navigate("/login");
+      } else {
+        alert(error.response?.data?.message || "Something went wrong");
+      }
+    }
+  };
 
   const handleFields = (
     id,
@@ -192,7 +247,10 @@ const Cards = ({
               <FaRegHeart />
             </motion.button>
           )}
-          <span className="absolute -bottom-1 -right-2 text-[11px] font-medium bg-gray-200 text-black size-5 rounded-full text-center content-center">{totalLikes}</span>
+          {
+            likes?.length && (<span className="absolute -bottom-1 -right-2 text-[11px] font-medium bg-gray-200 text-black size-5 rounded-full text-center content-center">{likes?.length}</span>)
+          }
+
         </AnimatePresence>
       </div>
     </div>

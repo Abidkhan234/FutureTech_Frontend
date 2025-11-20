@@ -431,52 +431,6 @@ export const AppProvider = ({ children }) => {
 
   // For Updating Like
 
-  const handleLikePosts = async (postId) => {
-    try {
-      const token = localStorage.getItem("token");
-
-      if (!token) {
-        toast.error("Create Account First");
-        handleToken();
-        navigate("/login");
-        return;
-      }
-
-      const { data } = await axios.patch(
-        `${import.meta.env.VITE_URL}/api/post/like-posts/${postId}`,
-        {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (data.message.toLowerCase().includes("unliked")) {
-        toast.success(data.message, {
-          icon: "💔",
-        });
-      } else {
-        toast.success(data.message, {
-          icon: "❤️",
-        });
-      }
-
-      handleData();
-    } catch (error) {
-      console.log(error);
-      if (
-        error.response?.data?.message?.toLowerCase().includes("token expired")
-      ) {
-        alert("Session expired. Please login again.");
-        localStorage.removeItem("token");
-        setisToken(false);
-        navigate("/login");
-      } else {
-        alert(error.response?.data?.message || "Something went wrong");
-      }
-    }
-  };
   // For Updating Like
 
   // For handling File preview
@@ -543,10 +497,11 @@ export const AppProvider = ({ children }) => {
         handleSignUpSend,
         handleLoginSend,
         handleDelete,
-        handleLikePosts,
         handleFetchLikePosts,
         handleUpdate,
         handleFileChange,
+        handleData,
+        handleToken
       }}
     >
       {children}

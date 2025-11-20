@@ -23,8 +23,7 @@ const HomePage = () => {
             postTime={v.postTime}
             userData={v.userData}
             postId={v._id}
-            isLiked={v.isLike.includes(tokenData?.userId)}
-            totalLikes={v.isLike?.length}
+            likeArr={v.isLike}
           />
         </div>
       ))}
