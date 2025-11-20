@@ -132,6 +132,9 @@ export const AppProvider = ({ children }) => {
       } else if (descriptionWordLength.length > 100) {
         toast.error("Description must be under 100 words");
         return;
+      } else if (!file) {
+        toast.error("Image is required");
+        return;
       }
 
       const formData = new FormData();

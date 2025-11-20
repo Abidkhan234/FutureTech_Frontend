@@ -14,6 +14,7 @@ const Cards = ({
   userData,
   postId,
   isLiked,
+  totalLikes
 }) => {
   const {
     handleDelete,
@@ -54,19 +55,18 @@ const Cards = ({
     <div className="flex flex-col gap-2 py-1.5 justify-between bg-[#fff] rounded-md relative">
       <div className="flex items-center gap-3 px-3 justify-between">
         <div className="flex items-center gap-3">
-          <div className="relative w-10.5 h-10.5 overflow-hidden bg-gray-200 rounded-full dark:bg-gray-600">
+          <div className="relative w-10.5 h-10.5 overflow-hidden rounded-full">
             <img
-              src={`${
-                userData?.avatarPath?.includes("/Images")
-                  ? `${profilePic}`
-                  : userData.avatarPath
-              }`}
+              src={`${userData?.avatarPath?.includes("https:")
+                ? userData.avatarPath
+                : `${profilePic}`
+                }`}
               className="h-full w-full object-cover"
               alt=""
             />
           </div>
           <div className="flex flex-col gap-1.5 items-start">
-            <h4 className="font-semibold text-lg">{userData.userName}</h4>
+            <h4 className="font-semibold text-lg">{userData?.userName || "User"}</h4>
             <span className="font-medium text-sm text-gray-500">
               {`${postTime.year},${postTime.month} ${postTime.day} at ${postTime.time} `}
             </span>
@@ -136,11 +136,11 @@ const Cards = ({
         )}
       </div>
 
-      <div className="h-[300px]">
+      <div className="h-[400px]">
         <img
           src={file}
           alt="Image"
-          className="w-full h-full object-cover object-center"
+          className="w-full h-full object-cover"
         />
       </div>
 
@@ -165,7 +165,7 @@ const Cards = ({
         )}
       </div>
 
-      <div className="px-2 flex justify-start items-center">
+      <div className="px-2 flex justify-start items-center relative w-fit">
         <AnimatePresence mode="wait" initial={false}>
           {isLiked ? (
             <motion.button
@@ -192,6 +192,7 @@ const Cards = ({
               <FaRegHeart />
             </motion.button>
           )}
+          <span className="absolute -bottom-1 -right-2 text-[11px] font-medium bg-gray-200 text-black size-5 rounded-full text-center content-center">{totalLikes}</span>
         </AnimatePresence>
       </div>
     </div>

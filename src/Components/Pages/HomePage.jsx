@@ -15,7 +15,7 @@ const HomePage = () => {
   ) : (
     <div className="h-full w-full flex flex-col items-center justify-center pt-20 gap-4 px-5 pb-7">
       {showData.map((v, i) => (
-        <div className="w-full max-w-[500px] basis-[500px]" key={i}>
+        <div className="w-full max-w-[550px]" key={i}>
           <Cards
             title={v.title}
             description={v.description}
@@ -24,6 +24,7 @@ const HomePage = () => {
             userData={v.userData}
             postId={v._id}
             isLiked={v.isLike.includes(tokenData?.userId)}
+            totalLikes={v.isLike?.length}
           />
         </div>
       ))}

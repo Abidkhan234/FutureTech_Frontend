@@ -45,10 +45,9 @@ const Navbar = () => {
             <NavLink
               to={v.path}
               className={({ isActive }) =>
-                `font-medium text-lg py-1.5 px-3 rounded-md border-2 border-transparent ${
-                  isActive
-                    ? "bg-[#141414] text-white border-[#333333]"
-                    : "text-gray-500"
+                `font-medium text-lg py-1.5 px-3 rounded-md border-2 border-transparent ${isActive
+                  ? "bg-[#141414] text-white border-[#333333]"
+                  : "text-gray-500"
                 }
                             hover:bg-[#141414] hover:text-white hover:border-[#333333]
                             transition-colors duration-300
@@ -74,11 +73,10 @@ const Navbar = () => {
                 onClick={() => setProfileDropdown(!profileDropdown)}
               >
                 <img
-                  src={`${
-                    tokenData.avatarpath?.includes("/Images")
-                      ? `${profilePic}`
-                      : tokenData.avatarpath
-                  }`}
+                  src={`${tokenData.avatarpath?.includes("https:")
+                    ? tokenData.avatarpath
+                    : `${profilePic}`
+                    }`}
                   className="w-full h-full object-cover object-center"
                   alt="profile-pic"
                 />
@@ -127,8 +125,7 @@ const Navbar = () => {
                 <NavLink
                   to={"/login"}
                   className={({ isActive }) =>
-                    `${
-                      isActive && "scale-95"
+                    `${isActive && "scale-95"
                     } text-lg font-semibold py-1.5 px-3 rounded-md bg-[#FFD11A] border-transparent text-[#141414] transition-transform duration-300`
                   }
                   onClick={() => setIsToggle(false)}
@@ -144,8 +141,7 @@ const Navbar = () => {
                 <NavLink
                   to={"/sign-up"}
                   className={({ isActive }) =>
-                    `${
-                      isActive && "scale-95"
+                    `${isActive && "scale-95"
                     } text-lg font-semibold py-1.5 px-3 rounded-md bg-[#FFD11A] border-transparent text-[#141414] transition-transform duration-300`
                   }
                   onClick={() => setIsToggle(false)}
