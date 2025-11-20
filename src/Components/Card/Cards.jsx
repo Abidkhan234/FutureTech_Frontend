@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import { FiEdit, FiTrash2 } from "react-icons/fi";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useAppContext } from "../../../Context/AppContext";
 import { MdClose, MdMoreHoriz } from "react-icons/md";
 import profilePic from "../../Asset/Images/profile.png";
@@ -34,6 +34,7 @@ const Cards = ({
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [readMore, setReadMore] = useState(false);
   const [likes, setLikes] = useState(likeArr);
+  const lastActionRef = useRef(0);
   const navigate = useNavigate();
 
   const words = description.split(" ");
@@ -44,6 +45,13 @@ const Cards = ({
   const isLiked = likes?.includes(tokenData?.userId);
 
   const handleLikePosts = async (postId) => {
+    const now = Date.now();
+
+    if (now - lastActionRef.current < 800) {
+      return;
+    }
+
+    lastActionRef.current = now;
     try {
       const token = localStorage.getItem("token");
 
