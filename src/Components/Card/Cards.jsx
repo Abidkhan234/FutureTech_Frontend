@@ -33,7 +33,7 @@ const Cards = ({
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [readMore, setReadMore] = useState(false);
-  const [likes, setLikes] = useState(likeArr || []);
+  const [likes, setLikes] = useState(likeArr);
   const navigate = useNavigate();
 
   const words = description.split(" ");

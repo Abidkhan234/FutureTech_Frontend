@@ -4,7 +4,7 @@ import SkeletonCard from "../Card/SkeletonCard";
 import Modal from "../Modal/Modal";
 
 const HomePage = () => {
-  const { showData, tokenData, isModal } = useAppContext();
+  const { showData, isModal } = useAppContext();
   const { loader } = useAppContext();
 
   return loader ? (
@@ -15,7 +15,7 @@ const HomePage = () => {
   ) : (
     <div className="h-full w-full flex flex-col items-center justify-center pt-20 gap-4 px-5 pb-7">
       {showData.map((v, i) => (
-        <div className="w-full max-w-[550px]" key={i}>
+        <div className="w-full max-w-[550px]" key={v._id}>
           <Cards
             title={v.title}
             description={v.description}

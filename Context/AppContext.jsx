@@ -169,13 +169,13 @@ export const AppProvider = ({ children }) => {
         }
       );
 
+      handleData();
+      handleToken();
       setTitleValue("");
       setDescriptionValue("");
       setfile(null);
       setisVisible(false);
-      handleToken();
       navigate("/");
-      handleData();
     } catch (error) {
       console.log(error);
     }
